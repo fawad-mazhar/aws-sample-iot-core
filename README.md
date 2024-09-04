@@ -1,14 +1,56 @@
-# Welcome to your CDK TypeScript project
+# Sample IoT Core
+---
 
-This is a blank project for CDK development with TypeScript.
+Fawad Mazhar <fawadmazhar@hotmail.com> 2024
 
-The `cdk.json` file tells the CDK Toolkit how to execute your app.
+---
 
-## Useful commands
 
-* `npm run build`   compile typescript to js
-* `npm run watch`   watch for changes and compile
-* `npm run test`    perform the jest unit tests
-* `npx cdk deploy`  deploy this stack to your default AWS account/region
-* `npx cdk diff`    compare deployed stack with current state
-* `npx cdk synth`   emits the synthesized CloudFormation template
+## Pre-requisites
+  - 🔧 AWS CLI Installed & Configured 👉 [Get help here](https://aws.amazon.com/cli/)
+  - 🔧 Node.js 18.x+
+  - 🔧 AWS CDK 👉 [Get help here](https://docs.aws.amazon.com/cdk/latest/guide/getting_started.html) 
+
+
+## Configuring AWS CLI
+```bash
+  ~/.aws/credentials
+
+  [profile_name]
+  aws_access_key_id = XXXXX
+  aws_secret_access_key = XXXXX
+```
+
+```bash
+  ~/.aws/config
+
+  [profile profile_name]
+  region = eu-west-1
+```
+
+
+## Installation
+Run command:
+```bash
+  npm install
+  npm run bootstrap:dev
+```
+
+
+## Deploying to dev (eu-west-1)
+Run command:
+```bash
+  npm run deploy:dev
+```
+
+## Checking differences between local and deployed version
+Run command:
+```bash
+  npm run diff:dev
+```
+
+## Checking synthesized CloudFormation template
+Run command:
+```bash
+  npm run synth:dev
+```

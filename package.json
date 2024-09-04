@@ -4,11 +4,18 @@
   "bin": {
     "sample-iot-core": "bin/sample-iot-core.js"
   },
+  "author": {
+    "name": "Fawad Mazhar",
+    "url": "https://github.com/fawad1985"
+  },
   "scripts": {
-    "build": "tsc",
-    "watch": "tsc -w",
     "test": "jest",
-    "cdk": "cdk"
+    "install": "cd functions && npm install",
+    "bootstrap:dev": "cdk bootstrap -v --profile fcdev --context stage=dev",
+    "synth:dev": "npx cdk -v --profile fcdev synth sample-iot-core-dev",
+    "diff:dev": "npx cdk -v --profile fcdev diff sample-iot-core-dev",
+    "deploy:dev": "npm run synth:dev && npx cdk -v --profile fcdev deploy sample-iot-core-dev",
+    "destroy:dev": "npx cdk -v --profile fcdev destroy sample-iot-core-dev"
   },
   "devDependencies": {
     "@types/jest": "^29.5.12",
@@ -22,6 +29,7 @@
   "dependencies": {
     "aws-cdk-lib": "2.155.0",
     "constructs": "^10.0.0",
-    "source-map-support": "^0.5.21"
+    "source-map-support": "^0.5.21",
+    "esbuild": "^0.19.10"
   }
 }
