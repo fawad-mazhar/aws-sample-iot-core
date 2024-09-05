@@ -325,7 +325,7 @@ export class SampleIotCoreStack extends Stack {
      * This rule invokes the MQTT Request λ Function
      */
     const requestTopicRule = new iot.CfnTopicRule(this, `${props.prefix}-device-request-rule-${props.stage}`, {
-      ruleName: `iot_cnf_device_request_rule_${props.stage}`,
+      ruleName: `iot_device_request_rule_${props.stage}`,
       topicRulePayload: {
         ruleDisabled: false,
         awsIotSqlVersion: props.awsIotSqlVersion,
@@ -353,6 +353,123 @@ export class SampleIotCoreStack extends Stack {
       principal: new ServicePrincipal('iot.amazonaws.com'),
       sourceArn: requestTopicRule.attrArn,
     })
+
+
+    /**
+     * IoT Shadow λ Function
+     */
+    new LogGroup(this, `${props.prefix}-mqtt-shadow-log-grp${props.stage}`, {
+      logGroupName: `/aws/lambda/${props.prefix}-mqtt-shadow-${props.stage}`,
+      retention: RetentionDays.ONE_YEAR,
+      removalPolicy: RemovalPolicy.DESTROY,
+    })
+    const deviceShadowLambdaFn = new NodejsFunction(this, `${props.prefix}-mqtt-shadow-${props.stage}`, {
+      functionName: `${props.prefix}-mqtt-shadow-${props.stage}`,
+      runtime: lambda.Runtime.NODEJS_18_X,
+      timeout: Duration.seconds(30),
+      memorySize: 512,
+      handler: 'handler',
+      environment: {
+        IOT_DEVICE_THING_TYPE: props.deviceThingType,
+        IOT_DEVICE_THING_NAME_PREFIX: props.deviceThingNamePrefix,
+        IOT_DEVICE_THING_NAME_SUFFIX: props.deviceThingNameSuffix,
+        STAGE: props.stage
+      },
+      entry: path.join(__dirname, '/../functions/mqtt-api/shadow.ts'),
+    })
+
+    /**
+     * IoT Rule
+     * This rule invokes the MQTT Shadow λ Function
+     */
+    const deviceShadowTopicRule = new iot.CfnTopicRule(this, `${props.prefix}-device-shadow-rule-${props.stage}`, {
+      ruleName: `iot_device_shadow_rule_${props.stage}`,
+      topicRulePayload: {
+        ruleDisabled: false,
+        awsIotSqlVersion: props.awsIotSqlVersion,
+        sql: "SELECT " + 
+             "topic(3) AS thingName, " + 
+             "topic(6) AS shadowName, " +
+             "previous.state.reported as previousState, " + 
+             "current.state.reported as currentState, " + 
+             "FROM '$aws/things/+/shadow/name/+/update/documents' ",
+        actions: [{
+          lambda: {
+            functionArn: deviceShadowLambdaFn.functionArn,
+          },
+        }],
+      },
+    })
+
+    new CfnOutput(this, `${props.prefix}-device-shadow-rule-${props.stage}-output`, {
+      description: `IoT topic rule to trigger on device shadow updates.`,
+      value: `${deviceShadowTopicRule.ruleName}`,
+    })
+
+    // λ Resource Policy allows invocation from IoT Rule
+    deviceShadowLambdaFn.addPermission("LambdaInvokePermission", {
+      principal: new ServicePrincipal('iot.amazonaws.com'),
+      sourceArn: deviceShadowTopicRule.attrArn,
+    })
+
+    /**
+     * MQTT Last Will λ Function
+     */
+    new LogGroup(this, `${props.prefix}-mqtt-last-will-log-grp-${props.stage}`, {
+      logGroupName: `/aws/lambda/${props.prefix}-mqtt-last-will-${props.stage}`,
+      retention: RetentionDays.ONE_YEAR,
+      removalPolicy: RemovalPolicy.DESTROY,
+    })
+    const mqttLastWillLambdaFn = new NodejsFunction(this, `${props.prefix}-mqtt-last-will-${props.stage}`, {
+      functionName: `${props.prefix}-mqtt-last-will-${props.stage}`,
+      runtime: lambda.Runtime.NODEJS_18_X,
+      timeout: Duration.seconds(30),
+      memorySize: 512,
+      handler: 'handler',
+      environment: {
+        IOT_DEVICE_THING_TYPE: props.deviceThingType,
+        IOT_DEVICE_THING_NAME_PREFIX: props.deviceThingNamePrefix,
+        IOT_DEVICE_THING_NAME_SUFFIX: props.deviceThingNameSuffix,
+        STAGE: props.stage
+      },
+      entry: path.join(__dirname, '/../functions/mqtt-api/last-will.ts'),
+    })
+      
+
+    /**
+     * IoT Rule
+     * This rule invokes the MQTT Last Will λ Function
+     */
+    const lastWillTopicRule = new iot.CfnTopicRule(this, `${props.prefix}-device-last-will-${props.stage}`, {
+      ruleName: `iot_device_last_will_rule_${props.stage}`,
+      topicRulePayload: {
+        ruleDisabled: false,
+        awsIotSqlVersion: props.awsIotSqlVersion,
+        sql: "SELECT " +
+             "topic() AS topic, " + 
+             "clientid() AS clientId, " + 
+             "principal() AS principal, " + 
+             "* as message, " +
+             "FROM 'zappy/api/+/lastWill'",
+        actions: [{
+          lambda: {
+            functionArn: mqttLastWillLambdaFn.functionArn,
+          },
+        }],
+      },
+    })
+
+    new CfnOutput(this, `${props.prefix}-device-last-will-${props.stage}-output`, {
+      description: `IoT topic rule to trigger on device's last will.`,
+      value: `${lastWillTopicRule.ruleName}`,      
+    })
+
+    // λ Resource Policy allows invocation from IoT Rule
+    mqttLastWillLambdaFn.addPermission("LambdaInvokePermission", {
+      principal: new ServicePrincipal('iot.amazonaws.com'),
+      sourceArn: lastWillTopicRule.attrArn,
+    })
+
 
   }
 

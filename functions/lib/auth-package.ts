@@ -14,7 +14,7 @@ import { getDeviceThing } from './things'
  * iot_device_name=""
  * iot_endpoint=""
  * iot_thing_arn=""
- * mqtt_topic_prefix="acam/api/" 
+ * mqtt_topic_prefix="zappy/api/" 
  */
 
 // Create a tar.gz package from the sourcePath directory, save in destinationPath

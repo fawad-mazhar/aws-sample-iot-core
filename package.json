@@ -8,14 +8,22 @@
     "name": "Fawad Mazhar",
     "url": "https://github.com/fawad1985"
   },
+  "keywords": [
+    "aws",
+    "serverless",
+    "iot",
+    "iot core",
+    "mqtt",
+    "x509"
+  ],
   "scripts": {
     "test": "jest",
     "install": "cd functions && npm install",
-    "bootstrap:dev": "cdk bootstrap -v --profile fcdev --context stage=dev",
-    "synth:dev": "npx cdk -v --profile fcdev synth sample-iot-core-dev",
-    "diff:dev": "npx cdk -v --profile fcdev diff sample-iot-core-dev",
-    "deploy:dev": "npm run synth:dev && npx cdk -v --profile fcdev deploy sample-iot-core-dev",
-    "destroy:dev": "npx cdk -v --profile fcdev destroy sample-iot-core-dev"
+    "bootstrap:dev": "cdk bootstrap -v --profile {profile_name} --context stage=dev",
+    "synth:dev": "npx cdk -v --profile {profile_name} synth sample-iot-core-dev",
+    "diff:dev": "npx cdk -v --profile {profile_name} diff sample-iot-core-dev",
+    "deploy:dev": "npm run synth:dev && npx cdk -v --profile {profile_name} deploy sample-iot-core-dev",
+    "destroy:dev": "npx cdk -v --profile {profile_name} destroy sample-iot-core-dev"
   },
   "devDependencies": {
     "@types/jest": "^29.5.12",

@@ -6,7 +6,7 @@ import { SampleIotCoreStack } from '../lib/sample-iot-core-stack'
 const app = new cdk.App();
 new SampleIotCoreStack(app, 'sample-iot-core-dev', {
   env: {
-    account: 'XXXXXXXXXX',
+    account: 'XXXXXXXXXXXX',
     region: 'eu-west-1',
   },
   stage: 'dev',
@@ -17,5 +17,5 @@ new SampleIotCoreStack(app, 'sample-iot-core-dev', {
   deviceThingNamePrefix: 'dev-zappy',
   deviceThingNameSuffix: 'device',
   awsIotSqlVersion: '2016-03-23',
-  iotEndpoint: 'a2h9ypwldqgcze-ats.iot.eu-west-1.amazonaws.com' // Grab this link from https://eu-west-1.console.aws.amazon.com/iot/home?region=eu-west-1#/settings
+  iotEndpoint: 'xxxypwldqxxx-ats.iot.eu-west-1.amazonaws.com' // Grab this link from https://eu-west-1.console.aws.amazon.com/iot/home?region=eu-west-1#/settings
 })

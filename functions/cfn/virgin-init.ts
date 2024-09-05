@@ -212,11 +212,9 @@ async function iotThingType(status: string) {
         thingTypeName: process.env.IOT_DEVICE_THING_TYPE!,
         thingTypeProperties: {
           searchableAttributes : [
-            'DeviceSerial',
-            'SoftwareVersionId',
-            'HardwareVersionId'
+            'DeviceSerial'
           ],
-          thingTypeDescription: 'Acoustic Camera'
+          thingTypeDescription: 'Zappy device.'
         } 
       })
       console.log(JSON.stringify(thingTypeResponse))

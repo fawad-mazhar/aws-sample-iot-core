@@ -117,6 +117,17 @@ def main():
     MQTT_CLIENT.configureMQTTOperationTimeout(5)  # 5 sec
     MQTT_CLIENT.disableMetricsCollection
 
+    #  When the device ungracefully disconnects, then IoT Core receives this message and takes necessary management actions
+    print('Configuring last will...')
+    MQTT_CLIENT.configureLastWill(f"{MQTT_TOPIC_PREFIX}/lastWill", json.dumps({
+        "state": {
+            "reported": {
+                "lastWill": True,
+                "triggerAction": True
+            }
+        }
+    }), 0)
+
 
     print(f'Connecting to AWS IoT Core at {IOT_ENDPOINT}:8883 ...')
     MQTT_CLIENT.connect()
@@ -137,7 +148,7 @@ def main():
             "state": {
                 "reported": {
                     "language": "en",
-                    "color": "blue"
+                    "color": "red"
                 }
             }
         }

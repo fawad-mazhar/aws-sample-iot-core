@@ -6,7 +6,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
+  "author": "Fawad Mazhar",
   "dependencies": {
     "@aws-sdk/client-iot": "^3.489.0",
     "@aws-sdk/client-iot-data-plane": "^3.489.0",
