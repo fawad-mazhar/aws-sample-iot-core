@@ -36,7 +36,6 @@ It is designed to make it easier to get started with AWS IoT. By binding togethe
   - 🔧 AWS CLI Installed & Configured 👉 [Get help here](https://aws.amazon.com/cli/)
   - 🔧 Node.js 18.x+
   - 🔧 AWS CDK 👉 [Get help here](https://docs.aws.amazon.com/cdk/latest/guide/getting_started.html) 
-  - 🔧 A VPC deployed [Get help here](https://github.com/fawad1985/aws-sample-vpc)
 </details>
 
 <details>
