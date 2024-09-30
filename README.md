@@ -29,51 +29,36 @@ It is designed to make it easier to get started with AWS IoT. By binding togethe
 
 - <b>Scalable MQTT API:</b> Securely scale your MQTT APIs in the cloud, ensuring that the system grows with your needs without compromising security or performance.
 
-## Pre-requisites
+## Deployment
+<details>
+  <summary>Pre-requisites</summary>
+
   - 🔧 AWS CLI Installed & Configured 👉 [Get help here](https://aws.amazon.com/cli/)
   - 🔧 Node.js 18.x+
   - 🔧 AWS CDK 👉 [Get help here](https://docs.aws.amazon.com/cdk/latest/guide/getting_started.html) 
+  - 🔧 A VPC deployed [Get help here](https://github.com/fawad1985/aws-sample-vpc)
+</details>
 
+<details>
+  <summary>Installation</summary>
+  Run command:
 
-## Configuring AWS CLI
-```bash
-  ~/.aws/credentials
-
-  [profile_name]
-  aws_access_key_id = XXXXX
-  aws_secret_access_key = XXXXX
-```
-
-```bash
-  ~/.aws/config
-
-  [profile profile_name]
-  region = eu-west-1
-```
-
-
-## Installation
-Run command:
-```bash
+  ```bash
   npm install
   npm run bootstrap:dev
-```
+  ```
+</details>
+  
+<details>
+  <summary>Deploying (eu-west-1)</summary>
+  Run command:
 
-
-## Deploying to dev (eu-west-1)
-Run command:
-```bash
+  ```bash
   npm run deploy:dev
-```
+  ```
+</details>
 
-## Checking differences between local and deployed version
-Run command:
-```bash
-  npm run diff:dev
-```
 
-## Checking synthesized CloudFormation template
-Run command:
-```bash
-  npm run synth:dev
-```
+## License
+
+This project is licensed under the MIT License. See the LICENSE file for more details.
